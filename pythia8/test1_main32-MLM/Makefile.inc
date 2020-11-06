@@ -44,7 +44,7 @@ PREFIX_SHARE=/usr/share/pythia8
 
 # Compilation flags (see ./configure --help for further documentation).
 CXX=/usr/bin/g++
-CXX_COMMON=-march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fPIC -DGZIP -I/usr/include -fopenmp -DOPENMP -I/usr/include
+CXX_COMMON=-march=x86-64 -mtune=generic -O2 -pipe -fno-plt -fPIC -DGZIP -I/usr/include -fopenmp -DOPENMP -I/usr/include 
 CXX_SHARED=-shared -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now -ldl
 CXX_SONAME=-Wl,-soname,
 LIB_SUFFIX=.so

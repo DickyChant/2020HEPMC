@@ -14,6 +14,7 @@
 #include "Pythia8Plugins/CombineMatchingInput.h"
 #include "TTree.h"
 #include "TFile.h"
+#include <string.h>
 using namespace Pythia8;
 
 //==========================================================================
@@ -36,7 +37,8 @@ int main() {
 
   // Create UserHooks pointer. Stop if it failed. Pass pointer to Pythia.
   CombineMatchingInput combined;
-  UserHooks* matching = combined.getHook(pythia);
+  combined.setHook(pythia);
+  auto matching = combined.hook;
   if (!matching) return 1;
   pythia.setUserHooksPtr(matching);
 
@@ -78,7 +80,8 @@ int main() {
   // Final statistics and done.
   pythia.stat();
   t->Write();
-  delete matching;
+  //delete matching;
+  outFile->Close();
 
   return 0;
 }

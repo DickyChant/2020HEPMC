@@ -10,6 +10,7 @@
 #include "TTree.h"
 #include "TFile.h"
 using namespace Pythia8;
+using namespace std;
 int main() {
 
   // Create file
@@ -43,5 +44,6 @@ int main() {
   pythia.stat();
   cout << pTZ;
   t->Write();
+  outFile->Close();
   return 0;
 }

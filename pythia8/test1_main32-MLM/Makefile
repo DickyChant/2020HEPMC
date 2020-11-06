@@ -73,13 +73,21 @@ ifeq ($(ROOT_USE),true)
 else
 	@echo "Error: $@ requires ROOT"
 endif
+main32: main32.cc $(PREFIX_LIB)/libpythia8.so
+ifeq ($(ROOT_USE),true)
+	$(CXX) $< -o $@ -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
+	 `$(ROOT_BIN)root-config --cflags`\
+	 -Wl,-rpath,$(ROOT_LIB) `$(ROOT_BIN)root-config --glibs`
+else
+	@echo "Error: $@ requires ROOT"
+endif
 
 # MixMax.
-main23: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main23: $$@.cc $(PREFIX_LIB)/libpythia8.so
 	$(CXX) $< -o $@ -std=c++11 -w $(CXX_COMMON) $(GZIP_INC) $(GZIP_FLAGS)
 
 # GZIP (required).
-main34: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main34: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(GZIP_USE),true)
 	$(CXX) $< -o $@ $(CXX_COMMON) $(GZIP_INC) $(GZIP_FLAGS)
 else
@@ -88,7 +96,7 @@ endif
 
 # HEPMC2.
 LQ main41 main42 main43 main85 main86 main87 main88 main89: $$@.cc\
-	$(PREFIX_LIB)/libpythia8.a
+	$(PREFIX_LIB)/libpythia8.so
 ifeq ($(HEPMC2_USE),true)
 	$(CXX) $< -o $@ -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
 	 -L$(HEPMC2_LIB) -Wl,-rpath,$(HEPMC2_LIB) -lHepMC\
@@ -98,7 +106,7 @@ else
 endif
 
 # PROMC.
-main46: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main46: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(PROMC_USE),true)
 	$(CXX) $< -o $@ -I$(PROMC_INCLUDE)/src -I$(PROMC_INCLUDE)/include\
 	 $(CXX_COMMON) -DPROMC=\"$(PROMC_INCLUDE)\" -Wno-long-long\
@@ -109,7 +117,7 @@ else
 endif
 
 # EVTGEN (and HEPMC2).
-main48: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main48: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(EVTGEN_USE)$(HEPMC2_USE)$(ENABLE_SHARED),truetruetrue)
 	$(CXX) $< -o $@ -I$(EVTGEN_INCLUDE) $(CXX_COMMON)\
 	 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL -Wl,-rpath,$(HEPMC2_LIB)\
@@ -120,7 +128,7 @@ else
 endif
 
 # FASTJET3.
-main71 main72 main75: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main71 main72 main75: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(FASTJET3_USE),true)
 	$(CXX) $< -o $@ -I$(FASTJET3_INCLUDE) $(CXX_COMMON)\
 	 -L$(FASTJET3_LIB) -Wl,-rpath,$(FASTJET3_LIB) -lfastjet\
@@ -130,7 +138,7 @@ else
 endif
 
 # FASTJET3 with modified Mass-Drop Tagger.
-main74: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main74: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(FASTJET3_USE),true)
 	$(CXX) $< -o $@ -I$(FASTJET3_INCLUDE) $(CXX_COMMON)\
 	 -L$(FASTJET3_LIB) -Wl,-rpath,$(FASTJET3_LIB) -lfastjet -lRecursiveTools\
@@ -140,7 +148,7 @@ else
 endif
 
 # FASTJET3 and HEPMC2.
-main81 main82 main83 main84: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main81 main82 main83 main84: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(FASTJET3_USE)$(HEPMC2_USE),truetrue)
 	$(CXX) $< -o $@ -I$(FASTJET3_INCLUDE) -I$(HEPMC2_INCLUDE) $(CXX_COMMON)\
 	 -L$(HEPMC2_LIB) -Wl,-rpath,$(HEPMC2_LIB) -lHepMC\
@@ -151,7 +159,7 @@ else
 endif
 
 # ROOT (turn off all warnings for readability).
-main91: $$@.cc $(PREFIX_LIB)/libpythia8.a
+main91: $$@.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(ROOT_USE),true)
 	$(CXX) $< -o $@ -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags`\
@@ -159,7 +167,7 @@ ifeq ($(ROOT_USE),true)
 else
 	@echo "Error: $@ requires ROOT"
 endif
-main92: $$@.cc $(PREFIX_LIB)/libpythia8.a main92.so
+main92: $$@.cc $(PREFIX_LIB)/libpythia8.so main92.so
 ifeq ($(ROOT_USE),true)
 	$(CXX) $< main92.so -o $@ -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags` -Wl,-rpath,./\
@@ -167,7 +175,7 @@ ifeq ($(ROOT_USE),true)
 else
 	@echo "Error: $@ requires ROOT"
 endif
-main92.so: main92Dct.cc $(PREFIX_LIB)/libpythia8.a
+main92.so: main92Dct.cc $(PREFIX_LIB)/libpythia8.so
 	$(CXX) $< -o $@ -w -I$(ROOT_INCLUDE) $(CXX_SHARED) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags`
 main92Dct.cc: main92.h main92LinkDef.h
@@ -176,7 +184,7 @@ main92Dct.cc: main92.h main92LinkDef.h
 
 # main93 with several dependencies. It is assumed that
 # Rivet and YODA are installed to system path or appended to it.
-main93: $$@.cc $(PREFIX_LIB)/libpythia8.a main93.so
+main93: $$@.cc $(PREFIX_LIB)/libpythia8.so main93.so
 ifeq ($(ROOT_USE),true)
 	$(CXX) $< main93.so -o $@ -DUSE_ROOT -DUSE_YODA -std=c++11 -w -I$(ROOT_INCLUDE) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags` -Wl,-rpath,./\
@@ -186,7 +194,7 @@ else
 	$(CXX) $< -o $@ -DUSE_YODA -std=c++11 -w $(CXX_COMMON) -lYODA\
 	 -lHepMC -lRivet  $(GZIP_INC) $(GZIP_FLAGS)
 endif
-main93.so: main93Dct.cc $(PREFIX_LIB)/libpythia8.a
+main93.so: main93Dct.cc $(PREFIX_LIB)/libpythia8.so
 ifeq ($(ROOT_USE),true)
 	$(CXX) $< -o $@ -w -I$(ROOT_INCLUDE) $(CXX_SHARED) $(CXX_COMMON)\
 	 `$(ROOTBIN)root-config --cflags`
